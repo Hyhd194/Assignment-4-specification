@@ -119,3 +119,30 @@ public class UDPserver {
                     totalSent += bytesRead;
                     System.out.println("Sent bytes: " + start + " to " + (start + bytesRead - 1));
                 }
+
+                boolean closed = false;
+                while (!closed) {
+                    DatagramPacket closePacket = new DatagramPacket(buffer, buffer.length);
+                    dataSocket.receive(closePacket);
+                    String closeRequest = new String(closePacket.getData(), 0, closePacket.getLength()).trim();
+                    
+                    if (closeRequest.startsWith("FILE " + filename + " CLOSE")) {
+                        String closeResponse = "FILE " + filename + " CLOSE_OK";
+                        byte[] closeBytes = closeResponse.getBytes();
+                        DatagramPacket closeRespPacket = new DatagramPacket(
+                            closeBytes, closeBytes.length, clientAddress, clientPort);
+                        dataSocket.send(closeRespPacket);
+                        closed = true;
+                        System.out.println("File transfer completed for: " + filename);
+                    }
+                }
+
+                fis.close();
+            } catch (IOException e) {
+                System.err.println("File handler error: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                if (dataSocket != null) dataSocket.close();
+            }
+        }
+
