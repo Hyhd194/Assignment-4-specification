@@ -106,3 +106,16 @@ public class UDPserver {
                      int readLength = (int) Math.min(1000, fileSize - totalSent);
                     fis.skip(start - totalSent);
                     int bytesRead = fis.read(buffer, 0, readLength);
+
+                    String dataBase64 = Base64.getEncoder().encodeToString(buffer, 0, bytesRead);
+                    String response = "FILE " + filename + " OK START " + start + " END " + (start + bytesRead - 1) 
+                                     + " DATA " + dataBase64;
+                    byte[] responseBytes = response.getBytes();
+                    
+                    DatagramPacket responsePacket = new DatagramPacket(
+                        responseBytes, responseBytes.length, clientAddress, clientPort);
+                    dataSocket.send(responsePacket);
+                    
+                    totalSent += bytesRead;
+                    System.out.println("Sent bytes: " + start + " to " + (start + bytesRead - 1));
+                }
