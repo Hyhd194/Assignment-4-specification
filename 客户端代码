@@ -109,3 +109,21 @@ public class UDPclient {
             fos.close();
         }
     }
+     private static String sendAndReceive(DatagramSocket socket, DatagramPacket requestPacket, 
+                                        int maxRetries, int initialTimeout) throws IOException {
+        byte[] buffer = new byte[BUFFER_SIZE];
+        DatagramPacket responsePacket = new DatagramPacket(buffer, buffer.length);
+        int retries = 0;
+        int timeout = initialTimeout;
+
+        while (retries <= maxRetries) {
+            try {
+                socket.send(requestPacket);
+                socket.receive(responsePacket);
+                return new String(responsePacket.getData(), 0, responsePacket.getLength()).trim();
+            } catch (SocketTimeoutException e) {
+                retries++;
+                if (retries > maxRetries) {
+                    System.err.println("Timeout after " + maxRetries + " retries");
+                    return null;
+                }
