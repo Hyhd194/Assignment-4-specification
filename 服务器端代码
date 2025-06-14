@@ -7,3 +7,12 @@ public class UDPserver {
     private static final int MIN_PORT = 50000;
     private static final int MAX_PORT = 51000;
     private static final int BUFFER_SIZE = 1024;
+
+    public static void main(String[] args) {
+        if (args.length != 1) {
+            System.err.println("Usage: java UDPserver <port>");
+            System.exit(1);
+        }
+
+        int serverPort = Integer.parseInt(args[0]);
+        DatagramSocket socket = null;
