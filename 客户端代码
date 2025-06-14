@@ -54,3 +54,11 @@ public class UDPclient {
             System.err.println("Failed to get response for " + filename);
             return;
         }
+
+        if (response.startsWith("ERR")) {
+            System.err.println("File not found: " + filename);
+            return;
+        } else if (response.startsWith("OK")) {
+            long fileSize = parseFileSize(response);
+            int dataPort = parseDataPort(response);
+            System.out.println("File size: " + fileSize + " bytes, data port: " + dataPort);
