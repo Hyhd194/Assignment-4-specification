@@ -127,3 +127,10 @@ public class UDPclient {
                     System.err.println("Timeout after " + maxRetries + " retries");
                     return null;
                 }
+
+                 timeout *= 2;
+                socket.setSoTimeout(timeout);
+                System.out.println("Timeout, retrying (" + retries + "/" + maxRetries + ")");
+            }
+        }
+        return null;
