@@ -95,3 +95,6 @@ public class UDPserver {
                 long totalSent = 0;
 
                 while (totalSent < fileSize) {
+                    DatagramPacket requestPacket = new DatagramPacket(buffer, buffer.length);
+                    dataSocket.receive(requestPacket);
+                    String request = new String(requestPacket.getData(), 0, requestPacket.getLength()).trim();
