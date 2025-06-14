@@ -145,3 +145,13 @@ public class UDPclient {
         }
         return -1;
     }
+
+    private static int parseDataPort(String response) {
+        String[] parts = response.split(" ");
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].equals("PORT")) {
+                return Integer.parseInt(parts[i + 1]);
+            }
+        }
+        return -1;
+    }
