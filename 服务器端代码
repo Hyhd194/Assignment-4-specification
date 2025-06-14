@@ -27,3 +27,7 @@ public class UDPserver {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 String request = new String(packet.getData(), 0, packet.getLength()).trim();
+                
+                if (request.startsWith("DOWNLOAD")) {
+                    String filename = request.substring(8).trim();
+                    System.out.println("Received download request for: " + filename);
