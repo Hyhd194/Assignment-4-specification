@@ -54,3 +54,8 @@ public class UDPserver {
         Random random = new Random();
         return MIN_PORT + random.nextInt(MAX_PORT - MIN_PORT + 1);
     }
+
+     private static long getFileSize(String filename) {
+        File file = new File(filename);
+        return file.exists() ? file.length() : -1;
+    }
