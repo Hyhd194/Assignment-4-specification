@@ -16,3 +16,14 @@ public class UDPserver {
 
         int serverPort = Integer.parseInt(args[0]);
         DatagramSocket socket = null;
+
+        try {
+            // 创建主服务器套接字
+            socket = new DatagramSocket(serverPort);
+            System.out.println("Server started on port " + serverPort);
+
+            byte[] buffer = new byte[BUFFER_SIZE];
+            while (true) {
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                socket.receive(packet);
+                String request = new String(packet.getData(), 0, packet.getLength()).trim();
