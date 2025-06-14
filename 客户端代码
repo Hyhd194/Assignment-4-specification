@@ -41,3 +41,5 @@ public class UDPclient {
             e.printStackTrace();
         }
     }
+     private static void downloadFile(DatagramSocket socket, InetAddress serverAddress, int serverPort, String filename) 
+                                                                                                    throws IOException {
