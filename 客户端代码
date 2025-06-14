@@ -43,3 +43,14 @@ public class UDPclient {
     }
      private static void downloadFile(DatagramSocket socket, InetAddress serverAddress, int serverPort, String filename) 
                                                                                                     throws IOException {
+        
+        String downloadRequest = "DOWNLOAD " + filename;
+        byte[] requestBytes = downloadRequest.getBytes();
+        DatagramPacket requestPacket = new DatagramPacket(
+            requestBytes, requestBytes.length, serverAddress, serverPort);
+        
+        String response = sendAndReceive(socket, requestPacket, MAX_RETRIES, INIT_TIMEOUT);
+        if (response == null) {
+            System.err.println("Failed to get response for " + filename);
+            return;
+        }
