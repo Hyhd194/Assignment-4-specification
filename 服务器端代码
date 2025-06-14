@@ -49,3 +49,8 @@ public class UDPserver {
             if (socket != null) socket.close();
         }
     }
+
+     private static int allocatePort() {
+        Random random = new Random();
+        return MIN_PORT + random.nextInt(MAX_PORT - MIN_PORT + 1);
+    }
