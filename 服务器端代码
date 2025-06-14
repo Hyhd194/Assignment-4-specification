@@ -102,3 +102,7 @@ public class UDPserver {
                      long start = parseStart(request);
                     long end = parseEnd(request);
                     if (start < 0 || end < 0) continue;
+
+                     int readLength = (int) Math.min(1000, fileSize - totalSent);
+                    fis.skip(start - totalSent);
+                    int bytesRead = fis.read(buffer, 0, readLength);
