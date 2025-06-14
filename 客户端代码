@@ -93,3 +93,19 @@ public class UDPclient {
                 }
             }
             System.out.println("\nReceived all data for " + filename);
+
+             String closeRequest = "FILE " + filename + " CLOSE";
+            requestBytes = closeRequest.getBytes();
+            requestPacket = new DatagramPacket(
+                requestBytes, requestBytes.length, serverAddress, dataPort);
+            
+            response = sendAndReceive(socket, requestPacket, MAX_RETRIES, INIT_TIMEOUT);
+            if (response != null && response.startsWith("FILE " + filename + " CLOSE_OK")) {
+                System.out.println("File transfer completed: " + filename);
+            } else {
+                System.err.println("Failed to close connection for " + filename);
+            }
+
+            fos.close();
+        }
+    }
