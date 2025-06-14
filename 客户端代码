@@ -21,3 +21,23 @@ public class UDPclient {
             InetAddress serverAddress = InetAddress.getByName(hostname);
             DatagramSocket socket = new DatagramSocket();
             socket.setSoTimeout(INIT_TIMEOUT);
+
+             File fileList = new File(filesList);
+            BufferedReader reader = new BufferedReader(new FileReader(fileList));
+            String filename;
+
+            while ((filename = reader.readLine()) != null) {
+                filename = filename.trim();
+                if (filename.isEmpty()) continue;
+
+                System.out.println("Downloading: " + filename);
+                downloadFile(socket, serverAddress, serverPort, filename);
+            }
+
+            reader.close();
+            socket.close();
+        } catch (IOException e) {
+            System.err.println("Client error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
