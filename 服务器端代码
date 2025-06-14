@@ -145,4 +145,14 @@ public class UDPserver {
                 if (dataSocket != null) dataSocket.close();
             }
         }
+        private long parseStart(String request) {
+            String[] parts = request.split(" ");
+            for (int i = 0; i < parts.length; i++) {
+                if (parts[i].equals("START")) {
+                    return Long.parseLong(parts[i + 1]);
+                }
+            }
+            return -1;
+        }
+
 
