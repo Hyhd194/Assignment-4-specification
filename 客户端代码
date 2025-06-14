@@ -62,3 +62,8 @@ public class UDPclient {
             long fileSize = parseFileSize(response);
             int dataPort = parseDataPort(response);
             System.out.println("File size: " + fileSize + " bytes, data port: " + dataPort);
+
+             File outputFile = new File(filename);
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            long totalReceived = 0;
+            int blockSize = 1000;
