@@ -155,3 +155,13 @@ public class UDPclient {
         }
         return -1;
     }
+
+    private static byte[] parseData(String response) {
+        String[] parts = response.split(" DATA ");
+        if (parts.length >= 2) {
+            String base64Data = parts[1];
+            return Base64.getDecoder().decode(base64Data);
+        }
+        return new byte[0];
+    }
+}
