@@ -98,3 +98,7 @@ public class UDPserver {
                     DatagramPacket requestPacket = new DatagramPacket(buffer, buffer.length);
                     dataSocket.receive(requestPacket);
                     String request = new String(requestPacket.getData(), 0, requestPacket.getLength()).trim();
+
+                     long start = parseStart(request);
+                    long end = parseEnd(request);
+                    if (start < 0 || end < 0) continue;
