@@ -67,3 +67,29 @@ public class UDPclient {
             FileOutputStream fos = new FileOutputStream(outputFile);
             long totalReceived = 0;
             int blockSize = 1000;
+
+            while (totalReceived < fileSize) {
+                long start = totalReceived;
+                long end = Math.min(totalReceived + blockSize - 1, fileSize - 1);
+                
+                String fileRequest = "FILE " + filename + " GET START " + start + " END " + end;
+                requestBytes = fileRequest.getBytes();
+                requestPacket = new DatagramPacket(
+                    requestBytes, requestBytes.length, serverAddress, dataPort);
+                
+                response = sendAndReceive(socket, requestPacket, MAX_RETRIES, INIT_TIMEOUT);
+                if (response == null) {
+                    System.err.println("Failed to receive data block for " + filename);
+                    fos.close();
+                    outputFile.delete();
+                    return;
+                }
+
+                if (response.startsWith("FILE " + filename + " OK")) {
+                    byte[] data = parseData(response);
+                    fos.write(data);
+                    totalReceived += data.length;
+                    System.out.print("."); // 进度指示
+                }
+            }
+            System.out.println("\nReceived all data for " + filename);
