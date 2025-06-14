@@ -34,3 +34,18 @@ public class UDPserver {
 
                     int dataPort = allocatePort();
                     new FileHandlerThread(socket, packet.getAddress(), packet.getPort(), filename, dataPort).start();
+
+                    String response = "OK " + filename + " SIZE " + getFileSize(filename) + " PORT " + dataPort;
+                    byte[] responseBytes = response.getBytes();
+                    DatagramPacket responsePacket = new DatagramPacket(
+                        responseBytes, responseBytes.length, packet.getAddress(), packet.getPort());
+                    socket.send(responsePacket);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Server error: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (socket != null) socket.close();
+        }
+    }
